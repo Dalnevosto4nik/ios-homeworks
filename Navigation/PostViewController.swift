@@ -9,7 +9,7 @@ import UIKit
 
 class PostViewController: UIViewController {
     
-    var postTitle: String = "Публикация" // Title по умолчанию
+    var postTitle: String = "Post" // Title по умолчанию
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,7 +19,7 @@ class PostViewController: UIViewController {
         
     }
     private func makeBarItem() {
-        let rightBarItem = UIBarButtonItem(title: "Информация", style: .plain, target: self, action: #selector(buttonAction))
+        let rightBarItem = UIBarButtonItem(title: "Information", style: .plain, target: self, action: #selector(buttonAction))
         self.navigationItem.title = postTitle
         navigationItem.rightBarButtonItem = rightBarItem
     }

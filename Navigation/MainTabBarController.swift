@@ -17,6 +17,7 @@ class MainTabBarController: UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .white
         setupControllers()
     }
 
@@ -28,13 +29,13 @@ class MainTabBarController: UITabBarController {
         let profileNavigationController = UINavigationController(rootViewController: profileView)
         
         // Меняем Tab Bar Item у добавленных контроллеров, добавив заголовок и картинку..
-        feedView.tabBarItem.title = "Лента"
+        feedView.tabBarItem.title = "Feed"
         feedView.tabBarItem.image = UIImage(systemName: "house.fill")
-        feedView.navigationItem.title = "Лента"
+        feedView.navigationItem.title = "Feed"
         
-        profileView.tabBarItem.title = "Профиль"
+        profileView.tabBarItem.title = "Profile"
         profileView.tabBarItem.image = UIImage(systemName: "person.fill")
-        profileView.navigationItem.title = "Профиль"
+        profileView.navigationItem.title = "Profile"
         
         viewControllers = [feedNavigationController, profileNavigationController]
         
