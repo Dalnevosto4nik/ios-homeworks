@@ -8,16 +8,19 @@
 import UIKit
 
 class ProfileViewController: UIViewController {
+    let profileHeader = ProfileHeaderView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let firstProfileHeaderView = ProfileHeaderView(frame: CGRect(x: 0,
-                                                                y: view.safeAreaInsets.top,
-                                                                width: view.frame.width,
-                                                                height: view.frame.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom
-                                                               )
-        )
-        firstProfileHeaderView.backgroundColor = .lightGray
-        view.addSubview(firstProfileHeaderView)
+        view.addSubview(profileHeader)
+        profileHeader.backgroundColor = .lightGray
+    }
+    
+    override func viewWillLayoutSubviews(){
+        super.viewWillLayoutSubviews()
+        profileHeader.frame = CGRect(x: 0,
+                                     y: view.safeAreaInsets.top,
+                                     width: view.frame.width,
+                                     height: view.frame.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom)
     }
 }
