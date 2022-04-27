@@ -8,14 +8,6 @@
 
 import UIKit
 
-// Метод для задания отступа в UITextField
-extension UITextField {
-    func indent(size:CGFloat) {
-        self.leftView = UIView(frame: CGRect(x: self.frame.minX, y: self.frame.minY, width: size, height: self.frame.height))
-        self.leftViewMode = .always
-    }
-}
-
 class ProfileHeaderView: UIView {
     
     override init(frame: CGRect) {
@@ -36,8 +28,8 @@ class ProfileHeaderView: UIView {
         avatarImageView.contentMode = .scaleAspectFill
         avatarImageView.clipsToBounds = true
         avatarImageView.backgroundColor = .systemBackground
-        avatarImageView.layer.cornerRadius = 55.0
-        avatarImageView.layer.borderWidth = 3.0
+        avatarImageView.layer.cornerRadius = 55
+        avatarImageView.layer.borderWidth = 3
         avatarImageView.layer.borderColor = UIColor.white.cgColor
         return avatarImageView
     }()
@@ -67,9 +59,9 @@ class ProfileHeaderView: UIView {
         setStatusButton.backgroundColor = .systemBlue
         setStatusButton.setTitle("Set status", for: .normal)
         setStatusButton.setTitleColor(UIColor.white, for: .normal)
-        setStatusButton.layer.cornerRadius = 12.0
+        setStatusButton.layer.cornerRadius = 12
         setStatusButton.layer.shadowOffset = CGSize(width: 4, height: 4)
-        setStatusButton.layer.shadowRadius = 4.0
+        setStatusButton.layer.shadowRadius = 4
         setStatusButton.layer.shadowColor = UIColor.black.cgColor
         setStatusButton.layer.shadowOpacity = 0.7
         setStatusButton.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
@@ -91,9 +83,9 @@ class ProfileHeaderView: UIView {
         statusTextField.textColor = .black
         statusTextField.font = UIFont.systemFont(ofSize: 15, weight: .regular)
         statusTextField.backgroundColor = .white
-        statusTextField.layer.borderWidth = 1.0
+        statusTextField.layer.borderWidth = 1
         statusTextField.layer.borderColor = UIColor.black.cgColor
-        statusTextField.layer.cornerRadius = 12.0
+        statusTextField.layer.cornerRadius = 12
         statusTextField.addTarget(self, action: #selector(statusTextChanges), for: .editingChanged)
         return statusTextField
     }()
@@ -109,33 +101,41 @@ class ProfileHeaderView: UIView {
         NSLayoutConstraint.activate([
             // avatarImageView
             // Отступ слева: 16pt от левой границы safeArea
-            avatarImageView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16.0),
+            avatarImageView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16),
             // Отступ сверху: 16pt от верхней границы safeArea
-            avatarImageView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 16.0),
+            avatarImageView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 16),
             // Размер изображения по вертикали: 110pt
-            avatarImageView.heightAnchor.constraint(equalToConstant: 110.0),
+            avatarImageView.heightAnchor.constraint(equalToConstant: 110),
             // Размер изображения по горизонтали: 110pt
-            avatarImageView.widthAnchor.constraint(equalToConstant: 110.0),
+            avatarImageView.widthAnchor.constraint(equalToConstant: 110),
             // fullNameLabel
             // Отступ слева: 16pt от правой границы изображения
-            fullNameLabel.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 16.0),
-            fullNameLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16.0),
-            fullNameLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 27.0),
+            fullNameLabel.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 16),
+            fullNameLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            fullNameLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 27),
             // statusLabel
-            statusLabel.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 16.0),
-            statusLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16.0),
-            statusLabel.bottomAnchor.constraint(equalTo: setStatusButton.topAnchor, constant: -64.0), // Изначально: -14
+            statusLabel.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 16),
+            statusLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            statusLabel.bottomAnchor.constraint(equalTo: setStatusButton.topAnchor, constant: -64), // Изначально: -14
             // statusTextField
-            statusTextField.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 16.0),
-            statusTextField.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16.0),
-            statusTextField.topAnchor.constraint(equalTo: statusLabel.bottomAnchor, constant: 8.0),
+            statusTextField.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 16),
+            statusTextField.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            statusTextField.topAnchor.constraint(equalTo: statusLabel.bottomAnchor, constant: 8),
             statusTextField.heightAnchor.constraint(equalToConstant: 40),
             // setStatusButton
-            setStatusButton.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16.0),
-            setStatusButton.topAnchor.constraint(equalTo: avatarImageView.bottomAnchor, constant: 28.0), // Изначально: 16
-            setStatusButton.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16.0),
+            setStatusButton.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            setStatusButton.topAnchor.constraint(equalTo: avatarImageView.bottomAnchor, constant: 28), // Изначально: 16
+            setStatusButton.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16),
             // Высота кнопки: 50pt
-            setStatusButton.heightAnchor.constraint(equalToConstant: 50.0)
+            setStatusButton.heightAnchor.constraint(equalToConstant: 50)
         ])
+    }
+}
+
+// MARK: - задаем отступ в UITextField
+extension UITextField {
+    func indent(size:CGFloat) {
+        self.leftView = UIView(frame: CGRect(x: self.frame.minX, y: self.frame.minY, width: size, height: self.frame.height))
+        self.leftViewMode = .always
     }
 }

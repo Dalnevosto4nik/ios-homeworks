@@ -49,7 +49,7 @@ class ProfileViewController: UIViewController {
             newButton.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             newButton.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             newButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            newButton.heightAnchor.constraint(equalToConstant: 50.0)
+            newButton.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
 }
