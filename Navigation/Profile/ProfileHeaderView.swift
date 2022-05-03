@@ -20,7 +20,7 @@ class ProfileHeaderView: UIView {
     }
     
     private var statusText = String()
-
+    
     private lazy var avatarImageView: UIImageView = {
         let avatarImageView = UIImageView()
         avatarImageView.translatesAutoresizingMaskIntoConstraints = false
@@ -56,21 +56,21 @@ class ProfileHeaderView: UIView {
     private lazy var setStatusButton: UIButton = {
         let setStatusButton = UIButton()
         setStatusButton.translatesAutoresizingMaskIntoConstraints = false
-        setStatusButton.backgroundColor = .systemBlue
+        setStatusButton.backgroundColor = UIColor(hex: 0x4885CC)
         setStatusButton.setTitle("Set status", for: .normal)
         setStatusButton.setTitleColor(UIColor.white, for: .normal)
-        setStatusButton.layer.cornerRadius = 12
-        setStatusButton.layer.shadowOffset = CGSize(width: 4, height: 4)
-        setStatusButton.layer.shadowRadius = 4
-        setStatusButton.layer.shadowColor = UIColor.black.cgColor
-        setStatusButton.layer.shadowOpacity = 0.7
+        setStatusButton.layer.cornerRadius = 10
+        // setStatusButton.layer.shadowOffset = CGSize(width: 4, height: 4)
+        // setStatusButton.layer.shadowRadius = 4
+        // setStatusButton.layer.shadowColor = UIColor.black.cgColor
+        // setStatusButton.layer.shadowOpacity = 0.7
         setStatusButton.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
         return setStatusButton
     }()
     
     @objc private func buttonAction() {
         statusLabel.text = statusText
-        statusTextField.text = "Enter the new status here..."
+        statusTextField.text = ""
         self.endEditing(true)
         print(statusText)
     }
@@ -79,13 +79,13 @@ class ProfileHeaderView: UIView {
         let statusTextField = UITextField()
         statusTextField.translatesAutoresizingMaskIntoConstraints = false
         statusTextField.indent(size: 10)
-        statusTextField.text = "Enter the new status here..."
+        statusTextField.placeholder = "Enter the new status here..."
         statusTextField.textColor = .black
         statusTextField.font = UIFont.systemFont(ofSize: 15, weight: .regular)
         statusTextField.backgroundColor = .white
         statusTextField.layer.borderWidth = 1
         statusTextField.layer.borderColor = UIColor.black.cgColor
-        statusTextField.layer.cornerRadius = 12
+        statusTextField.layer.cornerRadius = 10
         statusTextField.addTarget(self, action: #selector(statusTextChanges), for: .editingChanged)
         return statusTextField
     }()
@@ -97,7 +97,7 @@ class ProfileHeaderView: UIView {
     
     private func setupLayout(){
         [avatarImageView, fullNameLabel, statusLabel, setStatusButton, statusTextField].forEach { addSubview($0) }
-    
+        
         NSLayoutConstraint.activate([
             // avatarImageView
             // Отступ слева: 16pt от левой границы safeArea
@@ -120,7 +120,7 @@ class ProfileHeaderView: UIView {
             // statusTextField
             statusTextField.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 16),
             statusTextField.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            statusTextField.topAnchor.constraint(equalTo: statusLabel.bottomAnchor, constant: 8),
+            statusTextField.topAnchor.constraint(equalTo: statusLabel.bottomAnchor, constant: 10),
             statusTextField.heightAnchor.constraint(equalToConstant: 40),
             // setStatusButton
             setStatusButton.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16),

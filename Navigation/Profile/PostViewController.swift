@@ -5,6 +5,7 @@
 //  Created by Сергей Завьялов on 05.04.2022.
 //
 
+
 import UIKit
 
 class PostViewController: UIViewController {
@@ -28,6 +29,6 @@ class PostViewController: UIViewController {
         let infoView = InfoViewController()
         navigationController?.pushViewController(infoView, animated: true)
     }
-
+    
     
 }

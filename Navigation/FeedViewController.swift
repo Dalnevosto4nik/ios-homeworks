@@ -7,16 +7,12 @@
 
 import UIKit
 
-struct Post {
-    var title : String
-}
-
 class FeedViewController: UIViewController {
-    var post = Post(title: "My post")
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .white
         setupLayout()
     }
     
@@ -32,8 +28,8 @@ class FeedViewController: UIViewController {
         let firstButton = UIButton()
         firstButton.translatesAutoresizingMaskIntoConstraints = false
         firstButton.setTitle("First button", for: .normal)
-        firstButton.backgroundColor = .systemGray
-        firstButton.layer.cornerRadius = 12
+        firstButton.backgroundColor = UIColor(hex: 0x4885CC)
+        firstButton.layer.cornerRadius = 10
         firstButton.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
         return firstButton
     }()
@@ -46,8 +42,8 @@ class FeedViewController: UIViewController {
         let secondButton = UIButton()
         secondButton.translatesAutoresizingMaskIntoConstraints = false
         secondButton.setTitle("Second button", for: .normal)
-        secondButton.backgroundColor = .systemGray
-        secondButton.layer.cornerRadius = 12
+        secondButton.backgroundColor = UIColor(hex: 0x4885CC)
+        secondButton.layer.cornerRadius = 10
         secondButton.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
         return secondButton
     }()

@@ -24,19 +24,16 @@ class MainTabBarController: UITabBarController {
         
         let feedNavigationController = UINavigationController(rootViewController: feedView)
         let LogInViewController = UINavigationController(rootViewController: logInView)
-
+        
         feedView.tabBarItem.title = "Feed"
         feedView.tabBarItem.image = UIImage(systemName: "house.fill")
         feedView.navigationItem.title = "Feed"
         
-        
         logInView.tabBarItem.title = "Profile"
         logInView.tabBarItem.image = UIImage(systemName: "person.fill")
         logInView.navigationItem.title = "Profile"
-      
         
         viewControllers = [feedNavigationController, LogInViewController]
-        
     }
 }
 

@@ -8,10 +8,10 @@
 import UIKit
 
 class InfoViewController: UIViewController {
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .white
         self.navigationItem.title = "Информация"
         makeButton()
     }
@@ -41,5 +41,5 @@ class InfoViewController: UIViewController {
         present(alert, animated: false)
         
     }
-
+    
 }

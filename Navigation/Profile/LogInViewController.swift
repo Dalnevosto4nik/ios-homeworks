@@ -19,10 +19,10 @@ class LogInViewController: UIViewController {
     
     /*
      private let contentView: UIView = {
-         let contentView = UIView()
-         contentView.translatesAutoresizingMaskIntoConstraints = false
-         contentView.backgroundColor = .white
-         return contentView
+     let contentView = UIView()
+     contentView.translatesAutoresizingMaskIntoConstraints = false
+     contentView.backgroundColor = .white
+     return contentView
      }()
      */
     // Альтернативный код contentView
@@ -84,7 +84,7 @@ class LogInViewController: UIViewController {
         let userLoginTextField = UITextField()
         userLoginTextField.translatesAutoresizingMaskIntoConstraints = false
         userLoginTextField.indent(size: 10)
-        userLoginTextField.text = "Email or phone"
+        userLoginTextField.placeholder = "Email or phone"
         userLoginTextField.textColor = .black
         userLoginTextField.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         userLoginTextField.autocapitalizationType = .none
@@ -104,7 +104,7 @@ class LogInViewController: UIViewController {
         let userPasswordTextField = UITextField()
         userPasswordTextField.translatesAutoresizingMaskIntoConstraints = false
         userPasswordTextField.indent(size: 10)
-        userPasswordTextField.text = "Password"
+        userPasswordTextField.placeholder = "Password"
         userPasswordTextField.isSecureTextEntry = true
         userPasswordTextField.textColor = .black
         userPasswordTextField.font = UIFont.systemFont(ofSize: 16, weight: .regular)
@@ -116,7 +116,7 @@ class LogInViewController: UIViewController {
         return userPasswordTextField
     }()
     @objc private func userPassword() {
-
+        
     }
     
     private lazy var logInButton: UIButton = {
