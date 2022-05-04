@@ -12,13 +12,12 @@ class ProfileViewController: UIViewController {
     private let postModel: [PostModel] = PostModel.makeMockModel()
     
     private lazy var tableView: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .grouped)
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.dataSource = self
-        tableView.delegate = self
-        tableView.register(PostTableViewCell.self, forCellReuseIdentifier: PostTableViewCell.identifier)
-        return tableView
-    }()
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.dataSource = self
+        $0.delegate = self
+        $0.register(PostTableViewCell.self, forCellReuseIdentifier: PostTableViewCell.identifier)
+        return $0
+    }(UITableView(frame: .zero, style: .grouped))
     
     
     override func viewDidLoad() {
@@ -27,11 +26,10 @@ class ProfileViewController: UIViewController {
     }
     
     private let profileHeader: ProfileHeaderView = {
-        let profileHeader = ProfileHeaderView(frame: .zero)
-        profileHeader.backgroundColor = .systemGray6
-        profileHeader.translatesAutoresizingMaskIntoConstraints = false
-        return profileHeader
-    }()
+        $0.backgroundColor = .systemGray6
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        return $0
+    }(ProfileHeaderView(frame: .zero))
     
     private func setupLayout() {
         view.addSubview(tableView)

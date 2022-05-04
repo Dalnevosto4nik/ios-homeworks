@@ -17,36 +17,33 @@ class FeedViewController: UIViewController {
     }
     
     private let stackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .vertical
-        stackView.spacing = 10
-        return stackView
-    }()
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.axis = .vertical
+        $0.spacing = 10
+        return $0
+    }(UIStackView())
     
     private lazy var firstButton: UIButton = {
-        let firstButton = UIButton()
-        firstButton.translatesAutoresizingMaskIntoConstraints = false
-        firstButton.setTitle("First button", for: .normal)
-        firstButton.backgroundColor = UIColor(hex: 0x4885CC)
-        firstButton.layer.cornerRadius = 10
-        firstButton.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
-        return firstButton
-    }()
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.setTitle("First button", for: .normal)
+        $0.backgroundColor = UIColor(hex: 0x4885CC)
+        $0.layer.cornerRadius = 10
+        $0.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
+        return $0
+    }(UIButton())
     
     @objc func buttonAction(sender: UIButton!) {
         self.navigationController?.pushViewController(PostViewController(), animated: true)
     }
     
     private lazy var secondButton: UIButton = {
-        let secondButton = UIButton()
-        secondButton.translatesAutoresizingMaskIntoConstraints = false
-        secondButton.setTitle("Second button", for: .normal)
-        secondButton.backgroundColor = UIColor(hex: 0x4885CC)
-        secondButton.layer.cornerRadius = 10
-        secondButton.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
-        return secondButton
-    }()
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.setTitle("Second button", for: .normal)
+        $0.backgroundColor = UIColor(hex: 0x4885CC)
+        $0.layer.cornerRadius = 10
+        $0.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
+        return $0
+    }(UIButton())
     
     private func setupLayout() {
         view.addSubview(stackView)
