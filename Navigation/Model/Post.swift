@@ -17,10 +17,10 @@ struct PostModel {
     static func makeMockModel() -> [PostModel] {
         var model = [PostModel]()
         
-        model.append(PostModel(author: "Одинокий странник", description: "Я не стремлюсь стать бессмертным, мне не нужна мирская суета. Я хочу жить спокойной мирной жизнью. Но если небеса будут жестоки ко мне, а боги несправедливы, я пройду через бесконечную вселеленную и буду сражаться до последнего.", image: "1", likes: 122, views: 3456))
-        model.append(PostModel(author: "Chris Rea", description: ".. Oh no, this is the road. Said this is the road, this is the road to hell...", image: "2", likes: 234, views: 2346))
-        model.append(PostModel(author: "Белый Клык", description: "Цель жизни — добыча. Сущность жизни — добыча. Жизнь питается жизнью. Все живое в мире делится на тех, кто ест, и тех, кого едят. И закон этот говорил: ешь, или съедят тебя самого", image: "3", likes: 456, views: 867))
-        model.append(PostModel(author: "Джек Воробей", description: "Стоит разок умереть и приоритеты тут же меняются", image: "4", likes: 1345, views: 1986))
+        model.append(PostModel(author: "Одинокий странник", description: "Я не стремлюсь стать бессмертным, мне не нужна мирская суета. Я хочу жить спокойной мирной жизнью. Но если небеса будут жестоки ко мне, а боги несправедливы, я пройду через бесконечную вселеленную и буду сражаться до последнего.", image: "01", likes: 122, views: 3456))
+        model.append(PostModel(author: "Chris Rea", description: ".. Oh no, this is the road. Said this is the road, this is the road to hell...", image: "02", likes: 234, views: 2346))
+        model.append(PostModel(author: "Белый Клык", description: "Цель жизни — добыча. Сущность жизни — добыча. Жизнь питается жизнью. Все живое в мире делится на тех, кто ест, и тех, кого едят. И закон этот говорил: ешь, или съедят тебя самого", image: "03", likes: 456, views: 867))
+        model.append(PostModel(author: "Джек Воробей", description: "Стоит разок умереть и приоритеты тут же меняются", image: "04", likes: 1345, views: 1986))
         
         return model
     }

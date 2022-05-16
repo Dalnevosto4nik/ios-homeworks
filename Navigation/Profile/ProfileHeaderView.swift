@@ -74,7 +74,7 @@ class ProfileHeaderView: UIView {
     private lazy var statusTextField: UITextField = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.indent(size: 10)
-        $0.placeholder = "Enter the new status here..."
+        $0.placeholder = "Set your status.."
         $0.textColor = .black
         $0.font = UIFont.systemFont(ofSize: 15, weight: .regular)
         $0.backgroundColor = .white
@@ -86,7 +86,7 @@ class ProfileHeaderView: UIView {
         return $0
     }(UITextField())
     
-
+    
     
     @objc private func statusTextChanges() {
         statusText = statusTextField.text!

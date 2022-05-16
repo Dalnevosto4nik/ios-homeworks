@@ -8,14 +8,15 @@
 
 import UIKit
 
+let colorSet = UIColor(hex: 0x4885CC)
+
 class MainTabBarController: UITabBarController {
-    let colorSet = UIColor(hex: 0x4885CC)
     let feedView = FeedViewController()
     let logInView = LogInViewController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         self.view.tintColor = UIColor(ciColor: .init(color: colorSet))
         setupControllers()
     }
@@ -23,7 +24,7 @@ class MainTabBarController: UITabBarController {
     private func setupControllers() {
         
         let feedNavigationController = UINavigationController(rootViewController: feedView)
-        let LogInViewController = UINavigationController(rootViewController: logInView)
+        let logInViewController = UINavigationController(rootViewController: logInView)
         
         feedView.tabBarItem.title = "Feed"
         feedView.tabBarItem.image = UIImage(systemName: "house.fill")
@@ -33,7 +34,7 @@ class MainTabBarController: UITabBarController {
         logInView.tabBarItem.image = UIImage(systemName: "person.fill")
         logInView.navigationItem.title = "Profile"
         
-        viewControllers = [feedNavigationController, LogInViewController]
+        viewControllers = [feedNavigationController, logInViewController]
     }
 }
 
