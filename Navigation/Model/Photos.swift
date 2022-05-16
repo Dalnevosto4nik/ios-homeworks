@@ -7,9 +7,6 @@
 
 import UIKit
 
-//
-// Проверить и убрать неиспользуемые !!!!
-//
 struct PhotosModel {
     var author: String
     var image: String
