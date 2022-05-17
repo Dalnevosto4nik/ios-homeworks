@@ -72,7 +72,7 @@ extension ProfileViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.row == 0 {
+        if indexPath.section == 0 {
             self.navigationController?.pushViewController(PhotosViewController(), animated: true)
             self.navigationItem.backButtonTitle = "Back"
         } else { return
