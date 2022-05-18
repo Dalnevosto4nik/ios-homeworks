@@ -31,12 +31,6 @@ class ProfileViewController: UIViewController {
         self.navigationController?.navigationBar.isHidden = true
     }
     
-    private let profileHeader: ProfileHeaderView = {
-        $0.backgroundColor = .systemGray6
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        return $0
-    }(ProfileHeaderView(frame: .zero))
-    
     private func setupLayout() {
         view.addSubview(tableView)
         
@@ -50,8 +44,8 @@ class ProfileViewController: UIViewController {
 }
 
 // MARK: - UITableViewDataSource
-
 extension ProfileViewController: UITableViewDataSource {
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
@@ -63,27 +57,28 @@ extension ProfileViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: PhotosTableViewCell.identifier, for: indexPath) as! PhotosTableViewCell
+            cell.selectionStyle = .none
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: PostTableViewCell.identifier, for: indexPath) as! PostTableViewCell
             cell.setupCell(postModel[indexPath.row])
+            cell.selectionStyle = .none
             return cell
         }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.row == 0 {
+        if indexPath.section == 0 {
             self.navigationController?.pushViewController(PhotosViewController(), animated: true)
             self.navigationItem.backButtonTitle = "Back"
         } else { return
         }
     }
-    
 }
 
 // MARK: - UITableViewDelegate
-
 extension ProfileViewController: UITableViewDelegate {
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         UITableView.automaticDimension
     }

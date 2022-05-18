@@ -27,9 +27,10 @@ class PhotosTableViewCell: UITableViewCell {
     private var rightArrowImageView: UIImageView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.image = UIImage(systemName: "arrow.right")?.withTintColor(.black, renderingMode: .alwaysOriginal)
-        $0.contentMode = .scaleAspectFit
+        // $0.contentMode = .scaleAspectFit
+        // $0.contentScaleFactor = 2
         $0.sizeToFit()
-        $0.clipsToBounds = true
+        $0.clipsToBounds = false
         return $0
     }(UIImageView())
     
@@ -127,6 +128,8 @@ class PhotosTableViewCell: UITableViewCell {
             rightArrowImageView.topAnchor.constraint(equalTo: photosView.topAnchor, constant: firstInset),
             rightArrowImageView.centerYAnchor.constraint(equalTo: photosLabel.centerYAnchor),
             rightArrowImageView.trailingAnchor.constraint(equalTo: photosView.trailingAnchor, constant: -firstInset),
+            rightArrowImageView.widthAnchor.constraint(equalToConstant: 24),
+            rightArrowImageView.heightAnchor.constraint(equalToConstant: 28),
             // stackView
             stackView.topAnchor.constraint(equalTo: photosLabel.bottomAnchor, constant: firstInset),
             stackView.leadingAnchor.constraint(equalTo: photosView.leadingAnchor, constant: firstInset),

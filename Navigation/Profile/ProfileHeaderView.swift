@@ -5,7 +5,6 @@
 //  Created by Сергей Завьялов on 20.04.2022.
 //
 
-
 import UIKit
 
 class ProfileHeaderView: UIView {
@@ -13,6 +12,7 @@ class ProfileHeaderView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupLayout()
+        setupGestures()
     }
     
     required init?(coder: NSCoder) {
@@ -20,6 +20,17 @@ class ProfileHeaderView: UIView {
     }
     
     private var statusText = String()
+    private lazy var avatarImagePosition = avatarImageView.layer.position
+    private var isAvatarImageOpen = false
+    
+    private lazy var avatarView: UIView = {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        // $0.frame = UIScreen.main.bounds
+        $0.backgroundColor = .black
+        // $0.isHidden = true
+        $0.alpha = 0.0
+        return $0
+    }(UIView())
     
     private lazy var avatarImageView: UIImageView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
@@ -30,8 +41,20 @@ class ProfileHeaderView: UIView {
         $0.layer.cornerRadius = 55
         $0.layer.borderWidth = 3
         $0.layer.borderColor = UIColor.white.cgColor
+        $0.isUserInteractionEnabled = true
+        // $0.addGestureRecognizer(tapAvatarGesture)
         return $0
     }(UIImageView())
+    
+    private lazy var closeAvatarImageButton: UIButton = {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.setImage(UIImage(systemName: "multiply.circle.fill")?.withTintColor(colorSet), for: .normal)
+        $0.alpha = 0.0
+        $0.clipsToBounds = false
+        $0.imageView?.layer.transform = CATransform3DMakeScale(1.8, 1.8, 1.8)
+        $0.addTarget(self, action: #selector(tapToCloseAvatarAction), for: .touchUpInside)
+        return $0
+    }(UIButton())
     
     private lazy var fullNameLabel: UILabel = {
         $0.translatesAutoresizingMaskIntoConstraints = false
@@ -52,7 +75,7 @@ class ProfileHeaderView: UIView {
     
     private lazy var setStatusButton: UIButton = {
         $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.backgroundColor = UIColor(hex: 0x4885CC)
+        $0.backgroundColor = colorSet
         $0.setTitle("Set status", for: .normal)
         $0.setTitleColor(UIColor.white, for: .normal)
         $0.layer.cornerRadius = 10
@@ -68,7 +91,6 @@ class ProfileHeaderView: UIView {
         statusLabel.text = statusText
         statusTextField.text = ""
         self.endEditing(true)
-        print(statusText)
     }
     
     private lazy var statusTextField: UITextField = {
@@ -86,35 +108,96 @@ class ProfileHeaderView: UIView {
         return $0
     }(UITextField())
     
-    
-    
     @objc private func statusTextChanges() {
         statusText = statusTextField.text!
-        print("Статус изменен")
+    }
+    
+    private func setupGestures() {
+        let tapToOpenAvatarGesture = UITapGestureRecognizer(target: self, action: #selector(tapToOpenAvatarAction))
+        let tapToCloseAvatarGesture = UITapGestureRecognizer(target: self, action: #selector(tapToCloseAvatarAction))
+        if !isAvatarImageOpen {
+            isAvatarImageOpen = true
+            avatarImageView.addGestureRecognizer(tapToOpenAvatarGesture)
+        } else {
+            isAvatarImageOpen = false
+            avatarImageView.addGestureRecognizer(tapToCloseAvatarGesture)
+        }
+    }
+    
+    @objc private func tapToOpenAvatarAction() {
+        avatarImagePosition = avatarImageView.layer.position
+        UIView.animate(withDuration: 0.5,
+                       delay: 0.0,
+                       usingSpringWithDamping: 1.0,
+                       initialSpringVelocity: 0.0,
+                       options: .curveEaseInOut) { [self] in
+            
+            self.avatarView.alpha = 0.8
+            self.avatarImageView.center = avatarView.center
+            self.avatarImageView.layer.cornerRadius = 0
+            self.avatarImageView.layer.bounds = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width)
+            self.layoutIfNeeded()
+            
+        } completion: { _ in
+            UIView.animate(withDuration: 0.3,
+                           delay: 0.0) {
+                self.closeAvatarImageButton.alpha = 1
+                self.setupGestures()
+                self.layoutIfNeeded()
+            }
+        }
+    }
+    
+    @objc private func tapToCloseAvatarAction() {
+        UIView.animate(withDuration: 0.3,
+                       delay: 0.0,
+                       usingSpringWithDamping: 1.0,
+                       initialSpringVelocity: 0.0,
+                       options: .curveEaseInOut) {
+            
+            self.closeAvatarImageButton.alpha = 0
+            self.layoutIfNeeded()
+            
+        } completion: { _ in
+            UIView.animate(withDuration: 0.5,
+                           delay: 0.0) {
+                self.avatarView.alpha = 0.0
+                self.avatarImageView.layer.position = self.avatarImagePosition
+                self.avatarImageView.layer.bounds = CGRect(x: 0, y: 0, width: 110, height: 110)
+                self.avatarImageView.layer.cornerRadius = self.avatarImageView.bounds.width / 2
+                self.setupGestures()
+                self.layoutIfNeeded()
+            }
+        }
     }
     
     private func setupLayout(){
-        [avatarImageView, fullNameLabel, statusLabel, setStatusButton, statusTextField].forEach { addSubview($0) }
+        [fullNameLabel, statusLabel, setStatusButton, statusTextField, avatarView, avatarImageView, closeAvatarImageButton].forEach { addSubview($0) }
         
         NSLayoutConstraint.activate([
+            // extView
+            avatarView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
+            avatarView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
+            avatarView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            avatarView.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height),
             // avatarImageView
-            // Отступ слева: 16pt от левой границы safeArea
             avatarImageView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            // Отступ сверху: 16pt от верхней границы safeArea
             avatarImageView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 16),
-            // Размер изображения по вертикали: 110pt
             avatarImageView.heightAnchor.constraint(equalToConstant: 110),
-            // Размер изображения по горизонтали: 110pt
             avatarImageView.widthAnchor.constraint(equalToConstant: 110),
+            //closeAvatarImageButton
+            closeAvatarImageButton.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -32),
+            closeAvatarImageButton.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 32),
+            //closeAvatarImageButton.heightAnchor.constraint(equalToConstant: 110),
+            // closeAvatarImageButton.widthAnchor.constraint(equalToConstant: 110),
             // fullNameLabel
-            // Отступ слева: 16pt от правой границы изображения
             fullNameLabel.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 16),
             fullNameLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16),
             fullNameLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 27),
             // statusLabel
             statusLabel.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 16),
             statusLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            statusLabel.bottomAnchor.constraint(equalTo: setStatusButton.topAnchor, constant: -64), // Изначально: -14
+            statusLabel.bottomAnchor.constraint(equalTo: setStatusButton.topAnchor, constant: -64),
             // statusTextField
             statusTextField.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 16),
             statusTextField.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16),
@@ -122,9 +205,8 @@ class ProfileHeaderView: UIView {
             statusTextField.heightAnchor.constraint(equalToConstant: 40),
             // setStatusButton
             setStatusButton.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            setStatusButton.topAnchor.constraint(equalTo: avatarImageView.bottomAnchor, constant: 28), // Изначально: 16
+            setStatusButton.topAnchor.constraint(equalTo: avatarImageView.bottomAnchor, constant: 28),
             setStatusButton.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            // Высота кнопки: 50pt
             setStatusButton.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
