@@ -31,12 +31,6 @@ class ProfileViewController: UIViewController {
         self.navigationController?.navigationBar.isHidden = true
     }
     
-    private let profileHeader: ProfileHeaderView = {
-        $0.backgroundColor = .systemGray6
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        return $0
-    }(ProfileHeaderView(frame: .zero))
-    
     private func setupLayout() {
         view.addSubview(tableView)
         
@@ -94,7 +88,6 @@ extension ProfileViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        // return 220
         return section == 0 ? 220 : 0
     }
 }

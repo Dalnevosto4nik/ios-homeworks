@@ -5,7 +5,6 @@
 //  Created by Сергей Завьялов on 20.04.2022.
 //
 
-
 import UIKit
 
 class ProfileHeaderView: UIView {
@@ -68,7 +67,6 @@ class ProfileHeaderView: UIView {
         statusLabel.text = statusText
         statusTextField.text = ""
         self.endEditing(true)
-        print(statusText)
     }
     
     private lazy var statusTextField: UITextField = {
@@ -90,7 +88,6 @@ class ProfileHeaderView: UIView {
     
     @objc private func statusTextChanges() {
         statusText = statusTextField.text!
-        print("Статус изменен")
     }
     
     private func setupLayout(){
@@ -98,23 +95,18 @@ class ProfileHeaderView: UIView {
         
         NSLayoutConstraint.activate([
             // avatarImageView
-            // Отступ слева: 16pt от левой границы safeArea
             avatarImageView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            // Отступ сверху: 16pt от верхней границы safeArea
             avatarImageView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 16),
-            // Размер изображения по вертикали: 110pt
             avatarImageView.heightAnchor.constraint(equalToConstant: 110),
-            // Размер изображения по горизонтали: 110pt
             avatarImageView.widthAnchor.constraint(equalToConstant: 110),
             // fullNameLabel
-            // Отступ слева: 16pt от правой границы изображения
             fullNameLabel.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 16),
             fullNameLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16),
             fullNameLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 27),
             // statusLabel
             statusLabel.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 16),
             statusLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            statusLabel.bottomAnchor.constraint(equalTo: setStatusButton.topAnchor, constant: -64), // Изначально: -14
+            statusLabel.bottomAnchor.constraint(equalTo: setStatusButton.topAnchor, constant: -64),
             // statusTextField
             statusTextField.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 16),
             statusTextField.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16),
@@ -122,9 +114,8 @@ class ProfileHeaderView: UIView {
             statusTextField.heightAnchor.constraint(equalToConstant: 40),
             // setStatusButton
             setStatusButton.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            setStatusButton.topAnchor.constraint(equalTo: avatarImageView.bottomAnchor, constant: 28), // Изначально: 16
+            setStatusButton.topAnchor.constraint(equalTo: avatarImageView.bottomAnchor, constant: 28),
             setStatusButton.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            // Высота кнопки: 50pt
             setStatusButton.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
