@@ -21,7 +21,7 @@ class ProfileHeaderView: UIView {
     
     private var statusText = String()
     private lazy var avatarImagePosition = avatarImageView.layer.position
-    private var isAvatarImageOpen = false
+    private lazy var avatarImageBounds = avatarImageView.layer.bounds
     
     private lazy var avatarView: UIView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
@@ -48,11 +48,11 @@ class ProfileHeaderView: UIView {
     
     private lazy var closeAvatarImageButton: UIButton = {
         $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.setImage(UIImage(systemName: "multiply.circle.fill")?.withTintColor(colorSet), for: .normal)
+        $0.setImage(UIImage(systemName: "multiply.circle")?.withTintColor(colorSet), for: .normal)
         $0.alpha = 0.0
         $0.clipsToBounds = false
         $0.imageView?.layer.transform = CATransform3DMakeScale(1.8, 1.8, 1.8)
-        $0.addTarget(self, action: #selector(tapToCloseAvatarAction), for: .touchUpInside)
+        $0.addTarget(self, action: #selector(closeAvatarAction), for: .touchUpInside)
         return $0
     }(UIButton())
     
@@ -113,59 +113,45 @@ class ProfileHeaderView: UIView {
     }
     
     private func setupGestures() {
-        let tapToOpenAvatarGesture = UITapGestureRecognizer(target: self, action: #selector(tapToOpenAvatarAction))
-        let tapToCloseAvatarGesture = UITapGestureRecognizer(target: self, action: #selector(tapToCloseAvatarAction))
-        if !isAvatarImageOpen {
-            isAvatarImageOpen = true
-            avatarImageView.addGestureRecognizer(tapToOpenAvatarGesture)
-        } else {
-            isAvatarImageOpen = false
-            avatarImageView.addGestureRecognizer(tapToCloseAvatarGesture)
-        }
+        let tapAvatarGesture = UITapGestureRecognizer(target: self, action: #selector(tapAvatarAction))
+        avatarImageView.addGestureRecognizer(tapAvatarGesture)
     }
     
-    @objc private func tapToOpenAvatarAction() {
+    @objc private func tapAvatarAction() {
         avatarImagePosition = avatarImageView.layer.position
+        avatarImageBounds = avatarImageView.layer.bounds
         UIView.animate(withDuration: 0.5,
                        delay: 0.0,
                        usingSpringWithDamping: 1.0,
                        initialSpringVelocity: 0.0,
                        options: .curveEaseInOut) { [self] in
-            
             self.avatarView.alpha = 0.8
             self.avatarImageView.center = avatarView.center
             self.avatarImageView.layer.cornerRadius = 0
             self.avatarImageView.layer.bounds = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width)
-            self.layoutIfNeeded()
-            
         } completion: { _ in
             UIView.animate(withDuration: 0.3,
                            delay: 0.0) {
                 self.closeAvatarImageButton.alpha = 1
-                self.setupGestures()
                 self.layoutIfNeeded()
             }
         }
     }
     
-    @objc private func tapToCloseAvatarAction() {
+    @objc private func closeAvatarAction() {
         UIView.animate(withDuration: 0.3,
                        delay: 0.0,
                        usingSpringWithDamping: 1.0,
                        initialSpringVelocity: 0.0,
                        options: .curveEaseInOut) {
-            
             self.closeAvatarImageButton.alpha = 0
-            self.layoutIfNeeded()
-            
         } completion: { _ in
             UIView.animate(withDuration: 0.5,
                            delay: 0.0) {
                 self.avatarView.alpha = 0.0
                 self.avatarImageView.layer.position = self.avatarImagePosition
-                self.avatarImageView.layer.bounds = CGRect(x: 0, y: 0, width: 110, height: 110)
+                self.avatarImageView.layer.bounds = self.avatarImageBounds
                 self.avatarImageView.layer.cornerRadius = self.avatarImageView.bounds.width / 2
-                self.setupGestures()
                 self.layoutIfNeeded()
             }
         }
