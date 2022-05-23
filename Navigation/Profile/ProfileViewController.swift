@@ -11,12 +11,11 @@ class ProfileViewController: UIViewController {
     
     private let postModel: [PostModel] = PostModel.makeMockModel()
     
-    private lazy var tableView: UITableView = {
+    static let tableView: UITableView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.dataSource = self
-        $0.delegate = self
         $0.register(PhotosTableViewCell.self, forCellReuseIdentifier: PhotosTableViewCell.identifier)
         $0.register(PostTableViewCell.self, forCellReuseIdentifier: PostTableViewCell.identifier)
+        $0.register(ProfileHeaderView.self, forHeaderFooterViewReuseIdentifier: ProfileHeaderView.identifier)
         return $0
     }(UITableView(frame: .zero, style: .grouped))
     
@@ -32,13 +31,15 @@ class ProfileViewController: UIViewController {
     }
     
     private func setupLayout() {
-        view.addSubview(tableView)
+        ProfileViewController.tableView.delegate = self
+        ProfileViewController.tableView.dataSource = self
+        self.view.addSubview(ProfileViewController.tableView)
         
         NSLayoutConstraint.activate([
-            tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            ProfileViewController.tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            ProfileViewController.tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            ProfileViewController.tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            ProfileViewController.tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
 }
@@ -75,6 +76,7 @@ extension ProfileViewController: UITableViewDataSource {
         }
     }
 }
+
 
 // MARK: - UITableViewDelegate
 extension ProfileViewController: UITableViewDelegate {
