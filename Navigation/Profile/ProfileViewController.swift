@@ -11,12 +11,11 @@ class ProfileViewController: UIViewController {
     
     private let postModel: [PostModel] = PostModel.makeMockModel()
     
-    private lazy var tableView: UITableView = {
+    static let tableView: UITableView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.dataSource = self
-        $0.delegate = self
         $0.register(PhotosTableViewCell.self, forCellReuseIdentifier: PhotosTableViewCell.identifier)
         $0.register(PostTableViewCell.self, forCellReuseIdentifier: PostTableViewCell.identifier)
+        $0.register(ProfileHeaderView.self, forHeaderFooterViewReuseIdentifier: ProfileHeaderView.identifier)
         return $0
     }(UITableView(frame: .zero, style: .grouped))
     
@@ -28,17 +27,20 @@ class ProfileViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationController?.navigationBar.isHidden = true
+        self.navigationController?.navigationBar.isHidden = false
+        self.tabBarController?.tabBar.isHidden = false
     }
     
     private func setupLayout() {
-        view.addSubview(tableView)
+        ProfileViewController.tableView.delegate = self
+        ProfileViewController.tableView.dataSource = self
+        self.view.addSubview(ProfileViewController.tableView)
         
         NSLayoutConstraint.activate([
-            tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            ProfileViewController.tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            ProfileViewController.tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            ProfileViewController.tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            ProfileViewController.tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
 }
@@ -46,6 +48,7 @@ class ProfileViewController: UIViewController {
 // MARK: - UITableViewDataSource
 
 extension ProfileViewController: UITableViewDataSource {
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
@@ -57,10 +60,12 @@ extension ProfileViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: PhotosTableViewCell.identifier, for: indexPath) as! PhotosTableViewCell
+            cell.selectionStyle = .none
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: PostTableViewCell.identifier, for: indexPath) as! PostTableViewCell
             cell.setupCell(postModel[indexPath.row])
+            cell.selectionStyle = .none
             return cell
         }
     }
@@ -72,18 +77,18 @@ extension ProfileViewController: UITableViewDataSource {
         } else { return
         }
     }
-    
 }
 
 // MARK: - UITableViewDelegate
 
 extension ProfileViewController: UITableViewDelegate {
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         UITableView.automaticDimension
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let header = ProfileHeaderView()
+        let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: ProfileHeaderView.identifier) as! ProfileHeaderView
         return section == 0 ? header : nil
     }
     
@@ -91,3 +96,4 @@ extension ProfileViewController: UITableViewDelegate {
         return section == 0 ? 220 : 0
     }
 }
+
