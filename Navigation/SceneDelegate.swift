@@ -18,6 +18,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.rootViewController = MainTabBarController() // Добавляем UITabBarController
         window?.windowScene = windowScene
+        window?.backgroundColor = .systemGray6
         window?.makeKeyAndVisible() // Делаем окно главным и выводим его на экран
     }
     

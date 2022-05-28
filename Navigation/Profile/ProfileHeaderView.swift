@@ -9,6 +9,8 @@ import UIKit
 
 class ProfileHeaderView: UITableViewHeaderFooterView {
     
+    weak var delegate: ProfileHeaderViewDelegate?
+    
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
         setupLayout()
@@ -19,14 +21,21 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
         super.init(coder: coder)
     }
     
-    private var statusText = String()
     private lazy var avatarImagePosition = avatarImageView.layer.position
     private lazy var avatarImageBounds = avatarImageView.layer.bounds
+    
+    private lazy var profileView: UIView = {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.backgroundColor = .systemGray6
+        $0.isUserInteractionEnabled = false
+        return $0
+    }(UIView())
     
     private lazy var avatarView: UIView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.backgroundColor = .black
         $0.isUserInteractionEnabled = false
+        $0.center = CGPoint(x: UIScreen.main.bounds.midX, y: UIScreen.main.bounds.midY)
         $0.alpha = 0.0
         return $0
     }(UIView())
@@ -85,12 +94,6 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
         return $0
     }(UIButton())
     
-    @objc private func buttonAction() {
-        statusLabel.text = statusText
-        statusTextField.text = ""
-        self.endEditing(true)
-    }
-    
     private lazy var statusTextField: UITextField = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.indent(size: 10)
@@ -102,18 +105,26 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
         $0.layer.borderColor = UIColor.black.cgColor
         $0.layer.cornerRadius = 10
         $0.delegate = self
-        $0.addTarget(self, action: #selector(statusTextChanges), for: .editingChanged)
         return $0
     }(UITextField())
     
-    @objc private func statusTextChanges() {
-        statusText = statusTextField.text!
+    @objc private func buttonAction() {
+        if let text = statusTextField.text {
+            if text.isEmpty {
+                self.shakeTextField(textField: statusTextField)
+            } else {
+                self.statusLabel.text = text
+            }
+            self.statusTextField.text = ""
+            self.endEditing(true)
+        }
     }
     
     private func setupGestures() {
         let tapAvatarGesture = UITapGestureRecognizer(target: self, action: #selector(tapAvatarAction))
         avatarImageView.addGestureRecognizer(tapAvatarGesture)
     }
+    
     
     @objc func tapAvatarAction() {
         
@@ -122,17 +133,15 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
         
         UIImageView.animate(withDuration: 0.5,
                             animations: {
-            self.avatarImageView.center = CGPoint(x: UIScreen.main.bounds.midX, y: (UIScreen.main.bounds.midY - ProfileViewController.tableView.contentOffset.y))
+            self.avatarImageView.center = CGPoint(x: UIScreen.main.bounds.midX, y: (UIScreen.main.bounds.midY))
             self.avatarView.alpha = 0.8
-            self.avatarImageView.layer.bounds = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width)
             self.avatarImageView.layer.cornerRadius = 0
             self.avatarImageView.layer.borderWidth = 0
             self.avatarImageView.isUserInteractionEnabled = false
             self.setStatusButton.isUserInteractionEnabled = false
             self.statusTextField.isUserInteractionEnabled = false
-            ProfileViewController.tableView.isScrollEnabled = false
-            ProfileViewController.tableView.cellForRow(at: IndexPath(item: 0, section: 0))?.isUserInteractionEnabled = false
-            ProfileViewController.tableView.cellForRow(at: IndexPath(item: 0, section: 1))?.isUserInteractionEnabled = false
+            self.delegate?.userInteractionDisabled()
+            self.avatarImageView.layer.bounds = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width)
         },
                             completion: { _ in
             UIImageView.animate(withDuration: 0.3) {
@@ -162,23 +171,25 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
                 self.avatarImageView.isUserInteractionEnabled = true
                 self.setStatusButton.isUserInteractionEnabled = true
                 self.statusTextField.isUserInteractionEnabled = true
-                ProfileViewController.tableView.isScrollEnabled = true
-                ProfileViewController.tableView.cellForRow(at: IndexPath(item: 0, section: 0))?.isUserInteractionEnabled = true
-                ProfileViewController.tableView.cellForRow(at: IndexPath(item: 0, section: 1))?.isUserInteractionEnabled = true
+                self.delegate?.userInteractionEnabled()
                 self.layoutIfNeeded()
             }
         }
     }
     
     private func setupLayout(){
-        [fullNameLabel, statusLabel, setStatusButton, statusTextField, avatarView, avatarImageView, closeAvatarImageButton].forEach { addSubview($0) }
+        [profileView, fullNameLabel, statusLabel, setStatusButton, statusTextField, avatarView, avatarImageView, closeAvatarImageButton].forEach { addSubview($0) }
         
         NSLayoutConstraint.activate([
+            // profileView
+            profileView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
+            profileView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
+            profileView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            profileView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
             // extView
-            avatarView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
-            avatarView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
-            avatarView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
             avatarView.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height),
+            avatarView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width),
+            
             // avatarImageView
             avatarImageView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16),
             avatarImageView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 16),
@@ -226,4 +237,3 @@ extension ProfileHeaderView: UITextFieldDelegate {
         return true
     }
 }
-

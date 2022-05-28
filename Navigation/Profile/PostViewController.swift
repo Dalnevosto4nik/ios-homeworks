@@ -15,7 +15,6 @@ class PostViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.title = postTitle
-        view.backgroundColor = .white
         makeBarItem()
     }
     

@@ -7,6 +7,8 @@
 
 import UIKit
 
+// MARK: identifier
+
 extension UIView {
     static var identifier: String {
         return String(describing: self)

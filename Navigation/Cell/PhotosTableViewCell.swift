@@ -9,9 +9,12 @@ import UIKit
 
 class PhotosTableViewCell: UITableViewCell {
     
+    weak var delegate: PhotosTableViewDelegate?
+ 
     private let photosView: UIView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.backgroundColor = .white
+        $0.isUserInteractionEnabled = false
         return $0
     }(UIView())
     
@@ -27,9 +30,9 @@ class PhotosTableViewCell: UITableViewCell {
     private var rightArrowImageView: UIImageView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.image = UIImage(systemName: "arrow.right")?.withTintColor(.black, renderingMode: .alwaysOriginal)
-        // $0.contentMode = .scaleAspectFit
         $0.sizeToFit()
         $0.clipsToBounds = false
+        $0.isUserInteractionEnabled = true
         return $0
     }(UIImageView())
     
@@ -46,43 +49,48 @@ class PhotosTableViewCell: UITableViewCell {
         return $0
     }(UIStackView())
     
-    private var firstImageView: UIImageView = {
+    private lazy var firstImageView: UIImageView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.image = UIImage(named: "1")
+        // $0.image = UIImage(named: photo.image)
         $0.backgroundColor = .black
         $0.contentMode = .scaleAspectFill
         $0.layer.cornerRadius = 6
         $0.clipsToBounds = true
+        $0.isUserInteractionEnabled = true
         return $0
     }(UIImageView())
     
-    private var secondImageView: UIImageView = {
+    private lazy var secondImageView: UIImageView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.image = UIImage(named: "2")
         $0.backgroundColor = .black
         $0.contentMode = .scaleAspectFill
         $0.layer.cornerRadius = 6
         $0.clipsToBounds = true
+        $0.isUserInteractionEnabled = true
         return $0
     }(UIImageView())
     
-    private var thirdImageView: UIImageView = {
+    private lazy var thirdImageView: UIImageView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.image = UIImage(named: "3")
         $0.backgroundColor = .black
         $0.contentMode = .scaleAspectFill
         $0.layer.cornerRadius = 6
         $0.clipsToBounds = true
+        $0.isUserInteractionEnabled = true
         return $0
     }(UIImageView())
     
-    private var fourthImageView: UIImageView = {
+    private lazy var fourthImageView: UIImageView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.image = UIImage(named: "4")
         $0.backgroundColor = .black
         $0.contentMode = .scaleAspectFill
         $0.layer.cornerRadius = 6
         $0.clipsToBounds = true
+        $0.isUserInteractionEnabled = true
         return $0
     }(UIImageView())
     
@@ -93,10 +101,20 @@ class PhotosTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupLayout()
         customizeCell()
+        setupGestures()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setupGestures() {
+        let tapRightArrowGesture = UITapGestureRecognizer(target: self, action: #selector(rightArrowImageAction))
+        rightArrowImageView.addGestureRecognizer(tapRightArrowGesture)
+    }
+    
+    @objc func rightArrowImageAction() {
+        delegate?.rightArrowImagePressed()
     }
     
     private func customizeCell() {
@@ -110,7 +128,6 @@ class PhotosTableViewCell: UITableViewCell {
         let secondInset: CGFloat = 12
         
         [firstImageView, secondImageView, thirdImageView, fourthImageView].forEach { stackView.addArrangedSubview($0) }
-        
         [photosView, photosLabel, rightArrowImageView, stackView].forEach { contentView.addSubview($0) }
         
         NSLayoutConstraint.activate([
@@ -136,8 +153,6 @@ class PhotosTableViewCell: UITableViewCell {
             stackView.heightAnchor.constraint(equalToConstant: (UIScreen.main.bounds.width - (firstInset * 2 + secondInset * 3)) / 4),
             stackView.bottomAnchor.constraint(equalTo: photosView.bottomAnchor, constant: -firstInset)
         ])
-        
     }
-    
 }
 
